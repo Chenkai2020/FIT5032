@@ -20,7 +20,10 @@
         </div>
         <div class="card">
           <div class="card-body text-center">
-            <p class="mb-0 small">Some sessions are more demanding. If you are new to sport or have health concerns, ask organisers which activity fits you.</p>
+            <p class="mb-0 small">
+              Some sessions are more demanding. If you are new to sport or have
+              health concerns, ask organisers which activity fits you.
+            </p>
           </div>
         </div>
       </div>
@@ -28,18 +31,30 @@
       <div class="col-lg-8">
         <div class="vstack gap-3">
           <div v-for="e in shown()" :key="e.id" class="card">
-            <div class="card-body d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center">
+            <div
+              class="card-body d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center"
+            >
               <div class="me-sm-3">
                 <div class="fw-semibold">{{ e.title }}</div>
                 <div class="small">Event Type: {{ e.type }}</div>
                 <div class="small">Date: from {{ e.from }} to {{ e.to }}</div>
                 <div class="small">Location: {{ e.where }}</div>
               </div>
-              <button class="btn btn-outline-primary mt-2 mt-sm-0" @click="startRegister(e)">Register</button>
+              <button
+                class="btn btn-outline-primary mt-2 mt-sm-0"
+                @click="startRegister(e)"
+              >
+                Register
+              </button>
             </div>
           </div>
 
-          <div v-if="shown().length===0" class="text-center text-secondary py-5">No events.</div>
+          <div
+            v-if="shown().length===0"
+            class="text-center text-secondary py-5"
+          >
+            No events.
+          </div>
         </div>
 
         <div v-if="selected" class="card mt-4">
@@ -50,14 +65,29 @@
               <div class="row g-3">
                 <div class="col-md-6">
                   <label class="form-label">Full name</label>
-                  <input v-model.trim="form.name" class="form-control" required>
-                  <div v-if="tried && !checkNotEmpty(form.name)" class="text-danger small mt-1">Name is required.</div>
+                  <input v-model.trim="form.name" class="form-control" required />
+                  <div
+                    v-if="tried && !checkNotEmpty(form.name)"
+                    class="text-danger small mt-1"
+                  >
+                    Name is required.
+                  </div>
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label">Email</label>
-                  <input v-model.trim="form.email" type="email" class="form-control" required>
-                  <div v-if="tried && !checkEmail(form.email)" class="text-danger small mt-1">Please enter a valid email.</div>
+                  <input
+                    v-model.trim="form.email"
+                    type="email"
+                    class="form-control"
+                    required
+                  />
+                  <div
+                    v-if="tried && !checkEmail(form.email)"
+                    class="text-danger small mt-1"
+                  >
+                    Please enter a valid email.
+                  </div>
                 </div>
 
                 <div class="col-md-6">
@@ -68,29 +98,52 @@
                     <option>Intermediate</option>
                     <option>Advanced</option>
                   </select>
-                  <div v-if="tried && !checkNotEmpty(form.level)" class="text-danger small mt-1">Choose a level.</div>
+                  <div
+                    v-if="tried && !checkNotEmpty(form.level)"
+                    class="text-danger small mt-1"
+                  >
+                    Choose a level.
+                  </div>
                 </div>
 
                 <div class="col-12">
                   <div class="form-check">
-                    <input v-model="form.ok" type="checkbox" class="form-check-input" id="agree">
-                    <label class="form-check-label" for="agree">I agree to community guidelines.</label>
+                    <input
+                      v-model="form.ok"
+                      type="checkbox"
+                      class="form-check-input"
+                      id="agree"
+                    />
+                    <label class="form-check-label" for="agree">
+                      I agree to community guidelines.
+                    </label>
                   </div>
-                  <div v-if="tried && !form.ok" class="text-danger small mt-1">Please agree.</div>
+                  <div
+                    v-if="tried && !form.ok"
+                    class="text-danger small mt-1"
+                  >
+                    Please agree.
+                  </div>
                 </div>
               </div>
 
               <div class="mt-3 d-flex gap-2">
                 <button class="btn btn-primary" type="submit">Submit</button>
-                <button class="btn btn-outline-secondary" type="button" @click="cancel()">Cancel</button>
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  @click="cancel()"
+                >
+                  Cancel
+                </button>
               </div>
-
             </form>
           </div>
         </div>
 
         <div class="text-center text-secondary small mt-4">
-          Contact: 0489310865 / <a href="mailto:alexander202108@163.com">alexander202108@163.com</a>
+          Contact: 0489310865 /
+          <a href="mailto:alexander202108@163.com">alexander202108@163.com</a>
         </div>
       </div>
     </div>
@@ -99,13 +152,43 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
+
 let list = ref([
-  { id: 1, title: 'Clayton League',              type: 'League',         from: '18 Aug 2025', to: '18 Oct 2025', where: 'Clayton Pitch' },
-  { id: 2, title: 'United Through Football',     type: 'Friendly Match', from: '20 Aug 2025', to: '20 Sep 2025', where: 'Boxhill Pitch' },
-  { id: 3, title: 'Friendly to beginner Match',  type: 'Beginner Match', from: '18 Aug 2025', to: '18 Oct 2025', where: 'City Pitch' },
-  { id: 4, title: 'Beginner skill course',       type: 'Course',         from: '20 Oct 2025', to: '25 Oct 2025', where: 'City Pitch' }
+  {
+    id: 1,
+    title: 'Clayton League',
+    type: 'League',
+    from: '18 Aug 2025',
+    to: '18 Oct 2025',
+    where: 'Clayton Pitch'
+  },
+  {
+    id: 2,
+    title: 'United Through Football',
+    type: 'Friendly Match',
+    from: '20 Aug 2025',
+    to: '20 Sep 2025',
+    where: 'Boxhill Pitch'
+  },
+  {
+    id: 3,
+    title: 'Friendly to beginner Match',
+    type: 'Beginner Match',
+    from: '18 Aug 2025',
+    to: '18 Oct 2025',
+    where: 'City Pitch'
+  },
+  {
+    id: 4,
+    title: 'Beginner skill course',
+    type: 'Course',
+    from: '20 Oct 2025',
+    to: '25 Oct 2025',
+    where: 'City Pitch'
+  }
 ])
-let types = ['League','Friendly Match','Beginner Match','Course']
+
+let types = ['League', 'Friendly Match', 'Beginner Match', 'Course']
 let filterType = ref('')
 
 function shown () {
@@ -114,7 +197,7 @@ function shown () {
 }
 
 let selected = ref(null)
-let form = reactive({ name:'', email:'', level:'', ok:false })
+let form = reactive({ name: '', email: '', level: '', ok: false })
 let tried = ref(false)
 
 function checkNotEmpty (v) {
@@ -173,5 +256,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.card { border: 1px solid #e7e7e7; }
+.card {
+  border: 1px solid blueviolet;
+}
 </style>
