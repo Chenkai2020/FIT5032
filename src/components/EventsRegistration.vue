@@ -20,7 +20,7 @@
         </div>
         <div class="card">
           <div class="card-body text-center">
-            <p class="mb-0 small">Some sessions are more demanding. If you’re new to sport or have health concerns, ask organisers which activity fits you.</p>
+            <p class="mb-0 small">Some sessions are more demanding. If you are new to sport or have health concerns, ask organisers which activity fits you.</p>
           </div>
         </div>
       </div>

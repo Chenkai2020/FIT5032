@@ -6,11 +6,7 @@
           Community Football
         </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div id="nav" class="collapse navbar-collapse">
+        <div id="nav" class="navbar-collapse">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
               <a href="#" class="nav-link" :class="{active: tab==='home'}" @click.prevent="tab='home'">Home</a>
