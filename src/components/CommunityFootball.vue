@@ -1,43 +1,53 @@
 <template>
-  <div class="community-football">
-    <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+  <div class="app-wrap">
+    <nav class="navbar navbar-expand-lg bg-light border-bottom">
       <div class="container">
-        <a class="navbar-brand fw-bold" href="#"><i class="bi bi-shield-check"></i> Community Football Health</a>
+        <a class="navbar-brand" href="#">
+          Community Football
+        </a>
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="nav">
+
+        <div id="nav" class="collapse navbar-collapse">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link active" href="#">Home</a>
+              <a href="#" class="nav-link" :class="{active: tab==='home'}" @click.prevent="tab='home'">Home</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" :class="{active: tab==='events'}" @click.prevent="tab='events'">Events</a>
             </li>
           </ul>
         </div>
       </div>
     </nav>
 
-    <section class="hero py-5">
+    <section v-if="tab==='home'" class="py-5" style="background:#f8fbff">
       <div class="container">
-        <div class="row align-items-center g-4">
-          <div class="col-lg-7">
-            <h1 class="display-5 fw-bold">
-              Health promotion through <span class="text-primary">community football</span>
-            </h1>
-            <p class="lead text-secondary">
-              Find local sessions and start building healthy habits through football.
-            </p>
-          </div>
-        </div>
+        <h1 class="h2 mb-3">Health promotion through <span class="text-primary">community football</span></h1>
+        <p class="text-secondary">Find local sessions and make healthy habits through football.</p>
+        <button class="btn btn-primary" @click="tab='events'">
+          Find sessions
+        </button>
+      </div>
+    </section>
+
+    <section v-if="tab==='events'" class="py-4">
+      <div class="container">
+        <EventsRegistration />
       </div>
     </section>
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
+import EventsRegistration from './EventsRegistration.vue'
 
+let tab = ref('home')
 </script>
 
 <style scoped>
-.hero { background: linear-gradient(180deg,#0d6efd10,#ffffff 40%); }
-.card { border:0; box-shadow:0 6px 24px rgba(0,0,0,.06); }
+.app-wrap { min-height: 100vh; background:#fff; }
 </style>
