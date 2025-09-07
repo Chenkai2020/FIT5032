@@ -1,11 +1,29 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
-import CommunityFootball from './components/CommunityFootball.vue'
 </script>
 
 <template>
-  <CommunityFootball />
+  <div class="app-wrap">
+    <nav class="navbar navbar-expand-lg bg-light border-bottom">
+      <div class="container">
+        <a class="navbar-brand" href="#">Community Football</a>
+
+        <div id="nav" class="navbar-collapse">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+                <router-link to="/Firelogin" class="nav-link" active-class="active">Firebase Login</router-link>
+            </li>
+            <li class="nav-item">
+                <router-link to="/FireRegister" class="nav-link" active-class="active">Firebase Register</router-link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <router-view />
+  </div>
 </template>
 
 <style scoped>
