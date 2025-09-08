@@ -31,7 +31,14 @@
                 <div class="fw-semibold">{{ e.title }}</div>
                 <div class="small">Date: from {{ e.from }} to {{ e.to }}</div>
                 <div class="small">Location: {{ e.where }}</div>
+
+                
+                <div class="mt-2">
+                  <StarRating :event-id="e.id" />
+                </div>
+               
               </div>
+
               <button
                 class="btn btn-outline-primary mt-2 mt-sm-0"
                 @click="startRegister(e)"
@@ -144,6 +151,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
+import StarRating from '@/components/StarRating.vue'
 
 let list = ref([
   {

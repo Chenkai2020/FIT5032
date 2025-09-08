@@ -40,7 +40,6 @@ const isValid = computed(() =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value) && (password.value?.length >= 6)
 )
 
-// 一个带超时的辅助，避免网络异常导致长时间不返回
 const withTimeout = (p, ms = 15000) =>
   Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), ms))])
 
@@ -51,7 +50,6 @@ const register = async () => {
     const auth = getAuth()
     const cred = await withTimeout(createUserWithEmailAndPassword(auth, email.value, password.value))
 
-    // Firestore 写用户角色（失败不影响注册流程）
     try {
       const db = getFirestore(getApp())
       await withTimeout(setDoc(doc(db, 'users', cred.user.uid), {
