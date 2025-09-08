@@ -5,19 +5,33 @@
     <form @submit.prevent="register" novalidate>
       <div class="mb-3">
         <label class="form-label">Email</label>
-        <input v-model.trim="email" type="email" class="form-control" required placeholder="you@example.com" />
+        <input
+          v-model.trim="email"
+          type="email"
+          class="form-control"
+          required
+          placeholder="you@example.com"
+        />
       </div>
 
       <div class="mb-3">
         <label class="form-label">Password</label>
-        <input v-model="password" type="password" class="form-control" required minlength="6" placeholder="••••••" />
+        <input
+          v-model="password"
+          type="password"
+          class="form-control"
+          required
+          minlength="6"
+          placeholder="••••••"
+        />
       </div>
 
       <button class="btn btn-success w-100" :disabled="pending || !isValid">
         {{ pending ? 'Creating…' : 'Create account' }}
       </button>
 
-      <p class="small mt-3 mb-0">Already have an account?
+      <p class="small mt-3 mb-0">
+        Already have an account?
         <router-link :to="{name:'FireLogin'}">Login</router-link>
       </p>
     </form>
@@ -40,26 +54,19 @@ const isValid = computed(() =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value) && (password.value?.length >= 6)
 )
 
-const withTimeout = (p, ms = 15000) =>
-  Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), ms))])
-
 const register = async () => {
   if (!isValid.value || pending.value) return
   pending.value = true
   try {
     const auth = getAuth()
-    const cred = await withTimeout(createUserWithEmailAndPassword(auth, email.value, password.value))
+    const cred = await createUserWithEmailAndPassword(auth, email.value, password.value)
 
-    try {
-      const db = getFirestore(getApp())
-      await withTimeout(setDoc(doc(db, 'users', cred.user.uid), {
-        email: email.value,
-        role: 'member',
-        createdAt: serverTimestamp()
-      }))
-    } catch (err) {
-      console.warn('Save user role failed (will continue anyway):', err?.code || err?.message || err)
-    }
+    const db = getFirestore(getApp())
+    await setDoc(doc(db, 'users', cred.user.uid), {
+      email: email.value,
+      role: 'member',
+      createdAt: serverTimestamp()
+    })
 
     router.push({ name: 'FireLogin' })
   } catch (err) {
