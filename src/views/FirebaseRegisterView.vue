@@ -10,6 +10,7 @@
           type="email"
           class="form-control"
           required
+          maxlength="254"
           placeholder="you@example.com"
         />
       </div>
@@ -22,8 +23,10 @@
           class="form-control"
           required
           minlength="6"
+          maxlength="128"
           placeholder="••••••"
         />
+        <div class="form-text">At least 6 characters.</div>
       </div>
 
       <button class="btn btn-success w-100" :disabled="pending || !isValid">
@@ -51,11 +54,28 @@ const pending = ref(false)
 const router = useRouter()
 
 const isValid = computed(() =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value) && (password.value?.length >= 6)
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value || '') &&
+  (password.value && password.value.length >= 6)
 )
+
+function hasScript (s) {
+  if (!s) return false
+  const str = String(s)
+  return /<\s*script/i.test(str) || /javascript\s*:/i.test(str) || /\son\w+\s*=/i.test(str)
+}
+function sanitize (s) {
+  const map = { '<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;','/':'&#x2F;' }
+  return String(s ?? '').replace(/[<>&"'/]/g, ch => map[ch])
+}
 
 const register = async () => {
   if (!isValid.value || pending.value) return
+
+  if (hasScript(email.value)) {
+    alert('Detected script-like input. Please remove it.')
+    return
+  }
+
   pending.value = true
   try {
     const auth = getAuth()
@@ -63,7 +83,7 @@ const register = async () => {
 
     const db = getFirestore(getApp())
     await setDoc(doc(db, 'users', cred.user.uid), {
-      email: email.value,
+      email: sanitize(email.value.trim()),
       role: 'member',
       createdAt: serverTimestamp()
     })
