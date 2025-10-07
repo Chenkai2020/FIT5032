@@ -2,7 +2,8 @@
   // The info section in 10.1.1 provided detailed information about this package 
   import axios from "axios";
 
-  const apikey = "b447caae1a05eeae53040630a38c2be0";
+  const apikey = import.meta.env.VITE_OPENWEATHER_API_KEY;
+
   
   export default {
     name: "App",
