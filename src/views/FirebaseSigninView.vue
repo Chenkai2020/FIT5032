@@ -58,6 +58,7 @@ const signin = async () => {
   pending.value = true
   try {
     const cred = await signInWithEmailAndPassword(auth, email.value, password.value)
+    console.log(cred.user)
     const role = await getRole(cred.user.uid)
     if (role === 'admin') router.push({ name: 'admin' })
     else router.push({ name: 'home' })
@@ -67,7 +68,6 @@ const signin = async () => {
     pending.value = false
   }
 }
-
 
 onMounted(async () => {
   const u = auth.currentUser

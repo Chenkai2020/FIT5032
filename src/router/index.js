@@ -4,6 +4,7 @@ import EventsRegistration from '@/views/EventsRegistration.vue'
 import FirebaseSigninView from '@/views/FirebaseSigninView.vue'
 import FirebaseRegisterView from '@/views/FirebaseRegisterView.vue'
 import AdminView from '@/views/AdminView.vue'
+import ProfileView from '@/views/ProfileView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -18,6 +19,8 @@ const router = createRouter({
     
     { path: '/Firelogin',   redirect: { name: 'FireLogin' } },
     { path: '/:pathMatch(.*)*', redirect: { name: 'home' } },
+    { path: '/profile', name: 'profile', component: ProfileView, meta: { requiresAuth: true }},
+    { path: '/map', name: 'Map', component: () => import('../views/MapView.vue')},
   ],
   scrollBehavior: () => ({ top: 0 }),
 })

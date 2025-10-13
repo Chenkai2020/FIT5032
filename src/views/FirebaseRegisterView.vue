@@ -3,33 +3,51 @@
     <h2 class="mb-3">Firebase Register</h2>
 
     <form @submit.prevent="register" novalidate>
+
       <div class="mb-3">
-        <label class="form-label">Email</label>
+        <label class="form-label" for="regEmail">Email</label>
         <input
+          id="regEmail"
           v-model.trim="email"
           type="email"
           class="form-control"
+          name="email"
           required
           maxlength="254"
+          autocomplete="email"
           placeholder="you@example.com"
+          :aria-invalid="touched && !isEmailValid"
+          aria-describedby="emailHelp"
         />
+        <div id="emailHelp" class="visually-hidden">Enter your email address.</div>
+        <div v-if="touched && !isEmailValid" class="text-danger small mt-1" role="alert">
+          Please enter a valid email.
+        </div>
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Password</label>
+        <label class="form-label" for="regPassword">Password</label>
         <input
+          id="regPassword"
           v-model="password"
           type="password"
           class="form-control"
+          name="new-password"
           required
           minlength="6"
           maxlength="128"
+          autocomplete="new-password"
           placeholder="••••••"
+          :aria-invalid="touched && !isPwdValid"
+          aria-describedby="pwdHelp"
         />
-        <div class="form-text">At least 6 characters.</div>
+        <div id="pwdHelp" class="form-text">At least 6 characters.</div>
+        <div v-if="touched && !isPwdValid" class="text-danger small mt-1" role="alert">
+          Password must be at least 6 characters.
+        </div>
       </div>
 
-      <button class="btn btn-success w-100" :disabled="pending || !isValid">
+      <button class="btn btn-success w-100" type="submit" :disabled="pending || !isValid">
         {{ pending ? 'Creating…' : 'Create account' }}
       </button>
 
@@ -38,6 +56,7 @@
         <router-link :to="{name:'FireLogin'}">Login</router-link>
       </p>
     </form>
+
   </section>
 </template>
 
@@ -52,11 +71,11 @@ const email = ref('')
 const password = ref('')
 const pending = ref(false)
 const router = useRouter()
+const touched = ref(false)
 
-const isValid = computed(() =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value || '') &&
-  (password.value && password.value.length >= 6)
-)
+const isEmailValid = computed(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value || ''))
+const isPwdValid   = computed(() => (password.value && password.value.length >= 6))
+const isValid      = computed(() => isEmailValid.value && isPwdValid.value)
 
 function hasScript (s) {
   if (!s) return false
@@ -69,21 +88,17 @@ function sanitize (s) {
 }
 
 const register = async () => {
+  touched.value = true
   if (!isValid.value || pending.value) return
-
-  if (hasScript(email.value)) {
-    alert('Detected script-like input. Please remove it.')
-    return
-  }
-
   pending.value = true
+
   try {
     const auth = getAuth()
     const cred = await createUserWithEmailAndPassword(auth, email.value, password.value)
 
     const db = getFirestore(getApp())
     await setDoc(doc(db, 'users', cred.user.uid), {
-      email: sanitize(email.value.trim()),
+      email: email.value.trim(),
       role: 'member',
       createdAt: serverTimestamp()
     })
@@ -96,3 +111,7 @@ const register = async () => {
   }
 }
 </script>
+
+<style scoped>
+
+</style>

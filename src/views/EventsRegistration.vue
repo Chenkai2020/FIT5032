@@ -30,7 +30,17 @@
               <div class="me-sm-3">
                 <div class="fw-semibold">{{ e.title }}</div>
                 <div class="small">Date: from {{ e.from }} to {{ e.to }}</div>
-                <div class="small">Location: {{ e.where }}</div>
+                <div class="small d-flex align-items-center gap-2">
+                  <span>Location: {{ e.where }}</span>
+
+                <RouterLink
+                  class="btn btn-sm btn-outline-primary"
+                  :to="{ name: 'Map', query: { to: e.where } }"
+                  :aria-label="`Open ${e.where} on map`"
+                >
+                Map
+               </RouterLink>
+               </div>
 
                 
                 <div class="mt-2">
@@ -61,82 +71,107 @@
             <h5 class="card-title mb-3">Register — {{ selected.title }}</h5>
 
             <form @submit.prevent="submitForm" novalidate>
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <label class="form-label">Full name</label>
-                  <input v-model.trim="form.name" class="form-control" required />
-                  <div
-                    v-if="tried && !checkNotEmpty(form.name)"
-                    class="text-danger small mt-1"
-                  >
-                    Name is required.
-                  </div>
-                </div>
 
-                <div class="col-md-6">
-                  <label class="form-label">Email</label>
-                  <input
-                    v-model.trim="form.email"
-                    type="email"
-                    class="form-control"
-                    required
-                  />
-                  <div
-                    v-if="tried && !checkEmail(form.email)"
-                    class="text-danger small mt-1"
-                  >
-                    Please enter a valid email.
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">Level</label>
-                  <select v-model="form.level" class="form-select" required>
-                    <option value="">Select…</option>
-                    <option>Beginner</option>
-                    <option>Intermediate</option>
-                    <option>Advanced</option>
-                  </select>
-                  <div
-                    v-if="tried && !checkNotEmpty(form.level)"
-                    class="text-danger small mt-1"
-                  >
-                    Choose a level.
-                  </div>
-                </div>
-
-                <div class="col-12">
-                  <div class="form-check">
-                    <input
-                      v-model="form.ok"
-                      type="checkbox"
-                      class="form-check-input"
-                      id="agree"
-                    />
-                    <label class="form-check-label" for="agree">
-                      I agree to community guidelines.
-                    </label>
-                  </div>
-                  <div
-                    v-if="tried && !form.ok"
-                    class="text-danger small mt-1"
-                  >
-                    Please agree.
-                  </div>
-                </div>
-              </div>
-
-              <div class="mt-3 d-flex gap-2">
-                <button class="btn btn-primary" type="submit">Submit</button>
-                <button
-                  class="btn btn-outline-secondary"
-                  type="button"
-                  @click="cancel()"
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label" for="fullName">Full name</label>
+                <input
+                  id="fullName"
+                  v-model.trim="form.name"
+                  class="form-control"
+                  name="fullName"
+                  required
+                  autocomplete="name"
+                  :aria-invalid="tried && !checkNotEmpty(form.name)"
+                  aria-describedby="nameHelp"
+                />
+                <div id="nameHelp" class="form-text visually-hidden">Enter your full name.</div>
+                <div
+                  v-if="tried && !checkNotEmpty(form.name)"
+                  class="text-danger small mt-1"
+                  role="alert"
                 >
-                  Cancel
-                </button>
+                  Name is required.
+                </div>
               </div>
-            </form>
+
+              <div class="col-md-6">
+                <label class="form-label" for="email">Email</label>
+                <input
+                  id="email"
+                  v-model.trim="form.email"
+                  type="email"
+                  class="form-control"
+                  name="email"
+                  required
+                  autocomplete="email"
+                  inputmode="email"
+                  :aria-invalid="tried && !checkEmail(form.email)"
+                  aria-describedby="emailHelp"
+                />
+                <div id="emailHelp" class="form-text visually-hidden">Enter a valid email address.</div>
+                <div
+                  v-if="tried && !checkEmail(form.email)"
+                  class="text-danger small mt-1"
+                  role="alert"
+                >
+                  Please enter a valid email.
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label" for="level">Level</label>
+                <select
+                  id="level"
+                  v-model="form.level"
+                  class="form-select"
+                  name="level"
+                  required
+                  :aria-invalid="tried && !checkNotEmpty(form.level)"
+                >
+                  <option value="">Select…</option>
+                  <option>Beginner</option>
+                  <option>Intermediate</option>
+                  <option>Advanced</option>
+                </select>
+                <div
+                  v-if="tried && !checkNotEmpty(form.level)"
+                  class="text-danger small mt-1"
+                  role="alert"
+                >
+                  Choose a level.
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="form-check">
+                  <input
+                    id="agree"
+                    v-model="form.ok"
+                    type="checkbox"
+                    class="form-check-input"
+                    name="agree"
+                    required
+                    :aria-invalid="tried && !form.ok"
+                  />
+                  <label class="form-check-label" for="agree">
+                    I agree to community guidelines.
+                  </label>
+                </div>
+                <div v-if="tried && !form.ok" class="text-danger small mt-1" role="alert">
+                  Please agree.
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-3 d-flex gap-2">
+              <button class="btn btn-primary" type="submit">Submit</button>
+              <button class="btn btn-outline-secondary" type="button" @click="cancel()">
+                Cancel
+              </button>
+            </div>
+          </form>
+
           </div>
         </div>
 
@@ -150,6 +185,7 @@
 </template>
 
 <script setup>
+import axios from 'axios'
 import { ref, reactive, onMounted } from 'vue'
 import StarRating from '@/components/StarRating.vue'
 
@@ -207,7 +243,7 @@ function startRegister (e) {
 const LS_KEY = 'eventRegs'
 let regs = ref([])
 
-function submitForm () {
+async function submitForm () {
   tried.value = true
   if (!checkNotEmpty(form.name)) return
   if (!checkEmail(form.email)) return
@@ -224,7 +260,26 @@ function submitForm () {
   })
   localStorage.setItem(LS_KEY, JSON.stringify(regs.value))
 
-  alert('Saved')
+  try {
+    await axios.post('https://us-central1-week7-chenkaidou.cloudfunctions.net/sendBookingEmail', {
+      to: form.email,
+      booking: {
+        bookingId: String(Date.now()),
+        eventTitle: selected.value.title,
+        eventFrom:  selected.value.from,
+        eventTo:    selected.value.to,
+        eventWhere: selected.value.where,
+        name:  form.name,
+        email: form.email,
+        level: form.level
+      }
+    })
+    alert('Saved')
+  } catch (e) {
+    console.error(e?.response?.data || e)
+    alert('Saved, but email sending failed. Please try again later.')
+  }
+
   selected.value = null
 }
 

@@ -17,6 +17,9 @@ import TheWelcome from './components/TheWelcome.vue'
             <li class="nav-item">
                 <router-link to="/FireRegister" class="nav-link" active-class="active">Firebase Register</router-link>
             </li>
+            <li class="nav-item">
+                <router-link to="/profile" class="nav-link" active-class="active">My Profile</router-link>
+            </li>
           </ul>
         </div>
       </div>
