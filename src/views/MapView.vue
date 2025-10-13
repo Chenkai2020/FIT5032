@@ -133,11 +133,15 @@ onBeforeUnmount(() => {
 })
 
 async function searchPoi () {
+  const MEL_BBOX = [144.40, -38.50, 145.60, -37.40]
   if (!poiQuery.value.trim()) return
   const resp = await geocoding.forwardGeocode({
     query: poiQuery.value,
     autocomplete: true,
-    limit: 8
+    limit: 8,
+    countries: ['au'],
+    types: ['poi','place','locality','address'],
+    bbox: MEL_BBOX
   }).send()
 
   results.value = resp.body.features || []
@@ -205,10 +209,29 @@ async function buildRoute () {
 }
 
 async function geocodeOne (q) {
-  const resp = await geocoding.forwardGeocode({ query: q, limit: 1 }).send()
-  const f = resp.body.features?.[0]
+  const text = (q || '').trim()
+  if (!text) return []
+
+  let resp = await geocoding.forwardGeocode({
+    query: text,
+    limit: 1,
+    language: ['en'],
+    countries: ['au']
+  }).send()
+  let f = resp?.body?.features?.[0]
+
+  if (!f) {
+    resp = await geocoding.forwardGeocode({
+      query: text,
+      limit: 1,
+      language: ['en'],
+    }).send()
+    f = resp?.body?.features?.[0]
+  }
+
   return f ? [f.center] : []
 }
+
 
 function locateMe () {
   if (!navigator.geolocation) return alert('Geolocation not supported.')
@@ -219,6 +242,13 @@ function locateMe () {
     poiMarkers.push(m)
   }, () => alert('Failed to get location.'))
 }
+
+function clearRoute () {
+  if (map?.getLayer(routeLayerId)) map.removeLayer(routeLayerId)
+  if (map?.getSource(routeSourceId)) map.removeSource(routeSourceId)
+  routeInfo.value = null
+}
+
 </script>
 
 <style scoped>
