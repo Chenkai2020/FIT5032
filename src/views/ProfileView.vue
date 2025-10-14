@@ -20,7 +20,8 @@ async function loadData () {
   ratings.value = [
     { eventId: 1, value: 5, updatedAt: '2025-10-01 12:00' },
     { eventId: 2, value: 3, updatedAt: '2025-10-02 09:18' },
-    { eventId: 3, value: 4, updatedAt: '2025-10-02 10:05' }
+    { eventId: 3, value: 4, updatedAt: '2025-10-02 10:05' },
+    { eventId: 4, value: 3, updatedAt: '2025-10-03 10:20' }
   ]
 }
 
