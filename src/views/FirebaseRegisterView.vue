@@ -19,9 +19,9 @@
           :aria-invalid="touched && !isEmailValid"
           aria-describedby="emailHelp"
         />
-        <div id="emailHelp" class="visually-hidden">Enter your email address.</div>
+        <div id="emailHelp" class="visually-hidden">Enter your email address</div>
         <div v-if="touched && !isEmailValid" class="text-danger small mt-1">
-          Please enter a valid email.
+          Please enter a valid email
         </div>
       </div>
 
@@ -41,9 +41,9 @@
           :aria-invalid="touched && !isPwdValid"
           aria-describedby="pwdHelp"
         />
-        <div id="pwdHelp" class="form-text">At least 6 characters.</div>
+        <div id="pwdHelp" class="form-text">At least 6 characters</div>
         <div v-if="touched && !isPwdValid" class="text-danger small mt-1">
-          Password must be at least 6 characters.
+          Password must be at least 6 characters
         </div>
       </div>
 

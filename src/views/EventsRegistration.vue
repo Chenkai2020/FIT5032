@@ -62,7 +62,7 @@
             v-if="list.length === 0"
             class="text-center text-secondary py-5"
           >
-            No events.
+            No events
           </div>
         </div>
 
@@ -85,13 +85,13 @@
                   :aria-invalid="tried && !checkNotEmpty(form.name)"
                   aria-describedby="nameHelp"
                 />
-                <div id="nameHelp" class="form-text visually-hidden">Enter your full name.</div>
+                <div id="nameHelp" class="form-text visually-hidden">Enter your full name</div>
                 <div
                   v-if="tried && !checkNotEmpty(form.name)"
                   class="text-danger small mt-1"
                   role="alert"
                 >
-                  Name is required.
+                  Name is required
                 </div>
               </div>
 
@@ -109,13 +109,13 @@
                   :aria-invalid="tried && !checkEmail(form.email)"
                   aria-describedby="emailHelp"
                 />
-                <div id="emailHelp" class="form-text visually-hidden">Enter a valid email address.</div>
+                <div id="emailHelp" class="form-text visually-hidden">Enter a valid email address</div>
                 <div
                   v-if="tried && !checkEmail(form.email)"
                   class="text-danger small mt-1"
                   role="alert"
                 >
-                  Please enter a valid email.
+                  Please enter a valid email
                 </div>
               </div>
 
@@ -139,7 +139,7 @@
                   class="text-danger small mt-1"
                   role="alert"
                 >
-                  Choose a level.
+                  Choose a level
                 </div>
               </div>
 
@@ -155,11 +155,11 @@
                     :aria-invalid="tried && !form.ok"
                   />
                   <label class="form-check-label" for="agree">
-                    I agree to community guidelines.
+                    I agree to community guidelines
                   </label>
                 </div>
                 <div v-if="tried && !form.ok" class="text-danger small mt-1" role="alert">
-                  Please agree.
+                  Please agree
                 </div>
               </div>
             </div>
